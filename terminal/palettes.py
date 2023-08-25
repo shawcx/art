@@ -33,7 +33,7 @@ MAP = {
     }
 
 
-class Write(object):
+class Write:
     def __init__(self):
         self._enabled = True
         if not sys.stdout.isatty():
@@ -77,7 +77,7 @@ def SattoloShuffle(items):
     return items
 
 
-class Mover(object):
+class Mover:
     UP   = CSI+'1A'
     DOWN = CSI+'1B'
 
@@ -90,7 +90,7 @@ class Mover(object):
 
 
 class Blotch(Mover):
-    class Mover(object):
+    class Mover2:
         def __init__(self, mover):
             self.mover = mover
             self.n()
@@ -131,12 +131,12 @@ class Blotch(Mover):
             for j in range(console.cols):
                 self.board.append((i+1,j+1))
 
-        movers = [Blotch.Mover(self) for _ in range(20)]
+        movers = [Blotch.Mover2(self) for _ in range(4)]
         while self.board:
             for m in movers:
                 m.move()
-            sys.stdout.flush()
-            time.sleep(1 / 60.0)
+                sys.stdout.flush()
+            #time.sleep(1 / 60.0)
             #time.sleep(0.001)
 
 
@@ -166,10 +166,10 @@ class HorizontalLines(Mover):
             #sys.stdout.buffer.write(chr(random.randrange(33,127)).encode('utf-8'))
             sys.stdout.write(g)
             sys.stdout.flush()
-            time.sleep(0.001)
+            time.sleep(1/600)
 
 
-class Clear(object):
+class Clear:
     def run(self):
         board = []
         for i in range(console.rows):
@@ -194,7 +194,7 @@ class Clear(object):
             sys.stdout.flush()
             time.sleep(0.001)
 
-class Console(object):
+class Console:
     def __init__(self):
         if not sys.stdout.isatty():
             raise IOError('Not a TTY')
@@ -245,15 +245,17 @@ palettes = [
 
 try:
     while True:
-        s = random.choice(sequences)
-        p = random.choice(palettes)
-        hz = Blotch(s,p)
-        hz.run()
 
-        Clear().run()
         s = random.choice(sequences)
         p = random.choice(palettes)
         hz = HorizontalLines(s,p)
+        hz.run()
+
+        Clear().run()
+
+        s = random.choice(sequences)
+        p = random.choice(palettes)
+        hz = Blotch(s,p)
         hz.run()
 
         Clear().run()
